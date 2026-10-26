@@ -7,6 +7,7 @@
 from .acl import principals, verify_obo
 from .corpus import FOLDERS, GROUPS
 
+
 def _allowed_snapshot(index, p):
     def f(did):
         acl, deny = index.acl[did]

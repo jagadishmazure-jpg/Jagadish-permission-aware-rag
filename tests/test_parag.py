@@ -1,4 +1,5 @@
 import pytest
+
 from parag.acl import can_read, effective_acl, issue_obo, principals, verify_obo
 from parag.corpus import FOLDERS, build
 from parag.evalset import USERS, cases
@@ -78,7 +79,7 @@ def test_stale_acl_leaks_until_resync():
     assert "eng-1" not in retrieve(i, issue_obo("dia"), q, "pre_filter", folders=changed)
 
 def test_identity_from_token_only(idx):
-    with pytest.raises(Exception):
+    with pytest.raises(PermissionError, match="malformed token"):
         retrieve(idx, "not-a-token", "anything")
 
 def test_eval_set_has_both_labels():

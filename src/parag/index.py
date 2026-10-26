@@ -1,6 +1,8 @@
 """BM25 index with an ACL snapshot stored per chunk (as a connector sync would)."""
-import math, re
+import math
+import re
 from collections import Counter
+
 from .acl import effective_acl
 
 STOP = {"the", "a", "is", "of", "for", "what", "in", "and", "to", "was", "are", "with", "by", "on", "how", "many", "which", "who", "when", "does"}

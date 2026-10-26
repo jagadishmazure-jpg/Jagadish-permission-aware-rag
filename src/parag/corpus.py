@@ -4,6 +4,7 @@ ACL model: a document inherits its folder ACL unless it breaks inheritance. Prin
 Explicit deny wins over allow."""
 from dataclasses import dataclass, field
 
+
 @dataclass
 class Doc:
     id: str
