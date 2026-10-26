@@ -1,12 +1,16 @@
 """MEASURED on a SYNTHETIC corpus: leakage and recall per retrieval mode, plus a stale-ACL scenario."""
-import json, pathlib, sys
+import json
+import pathlib
+import sys
+
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from parag.acl import issue_obo  # noqa: E402
-from parag.corpus import FOLDERS, build  # noqa: E402
-from parag.evalset import cases  # noqa: E402
-from parag.index import Index  # noqa: E402
-from parag.retrieve import retrieve  # noqa: E402
+from parag.acl import issue_obo
+from parag.corpus import FOLDERS, build
+from parag.evalset import cases
+from parag.index import Index
+from parag.retrieve import retrieve
+
 
 def run(mode, idx, cs, folders=FOLDERS):
     leak = recall = neg = pos = 0

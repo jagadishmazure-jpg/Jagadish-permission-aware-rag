@@ -1,6 +1,12 @@
 """ACL resolution (inheritance, groups, explicit deny) and an on-behalf-of (OBO) style signed token."""
-import base64, hashlib, hmac, json, time
+import base64
+import hashlib
+import hmac
+import json
+import time
+
 from .corpus import FOLDERS, GROUPS
+
 
 def principals(user: str, groups=GROUPS) -> set[str]:
     return {f"user:{user}"} | {g for g, members in groups.items() if user in members}
@@ -22,8 +28,11 @@ def issue_obo(user: str, ttl: int = 300, now=None) -> str:
     return base64.urlsafe_b64encode(body).decode() + "." + sig
 
 def verify_obo(token: str, now=None) -> str:
-    b64, sig = token.rsplit(".", 1)
-    body = base64.urlsafe_b64decode(b64)
+    try:
+        b64, sig = token.rsplit(".", 1)
+        body = base64.urlsafe_b64decode(b64)
+    except ValueError as exc:  # no separator or invalid base64 (binascii.Error is a ValueError)
+        raise PermissionError("malformed token") from exc
     if not hmac.compare_digest(sig, hmac.new(KEY, body, hashlib.sha256).hexdigest()):
         raise PermissionError("bad signature")
     claims = json.loads(body)
